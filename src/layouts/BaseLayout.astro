@@ -2,6 +2,7 @@
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { business } from '../data/business';
 import '../styles/global.css';
 
 interface Props {
@@ -46,7 +47,25 @@ const { title, description, canonicalUrl, ogImage, schema, noindex } = Astro.pro
       noindex={noindex}
     />
 
-    <!-- ponytail: GA4 غير مفعّل (لا معرّف قياس حقيقي متوفر)، ceiling: بدون تتبع تحليلات حالياً. upgrade: أضف معرف G-XXXXXXXXXX الحقيقي هنا عند توفره. -->
+    <!-- Google Analytics 4 -->
+    {
+      business.analytics.ga4 && (
+        <>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${business.analytics.ga4}`}
+          />
+          <script is:inline define:vars={{ gaId: business.analytics.ga4 }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', gaId);
+          </script>
+        </>
+      )
+    }
   </head>
 
   <body class="flex min-h-screen flex-col bg-stone-50 text-stone-900 antialiased font-body">
