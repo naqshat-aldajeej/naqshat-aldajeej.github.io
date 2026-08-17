@@ -30,20 +30,22 @@ export const business = {
   },
   // نص معروض في التذييل وصفحة التواصل
   hours: [
-    { days: 'السبت - الخميس', hours: '9:00 ص - 9:00 م' },
-    { days: 'الجمعة', hours: '4:00 م - 9:00 م' },
+    { days: 'السبت - الجمعة', hours: '10:00 ص - 11:00 م' },
   ],
   // بيانات آلية Schema.org (openingHoursSpecification)
   hoursSchema: [
     {
-      dayOfWeek: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-      opens: '09:00',
-      closes: '21:00',
-    },
-    {
-      dayOfWeek: 'Friday',
-      opens: '16:00',
-      closes: '21:00',
+      dayOfWeek: [
+        'Saturday',
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+      ],
+      opens: '10:00',
+      closes: '23:00',
     },
   ],
   // ponytail: روابط السوشيال ميديا مؤجَّلة بطلب صريح من المستخدم (2026-08-17) —

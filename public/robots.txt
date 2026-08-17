@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
+
+# مرجع منظَّم للنماذج اللغوية
+# LLM-friendly summary: https://naqshat-aldajeej.github.io/llms.txt
+
 Sitemap: https://naqshat-aldajeej.github.io/sitemap-index.xml
