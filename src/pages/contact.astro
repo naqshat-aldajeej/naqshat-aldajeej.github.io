@@ -42,7 +42,7 @@ const schema = {
 
       <div class="mt-10 grid gap-10 lg:grid-cols-2">
         <!-- معلومات التواصل -->
-        <div class="space-y-6">
+        <div class="space-y-6" data-ga-location="contact_details">
           <div class="flex items-start gap-4 rounded-xl border border-stone-200 bg-white p-5">
             <Icon name="lucide:phone" class="size-6 shrink-0 text-brand-700" aria-hidden="true" />
             <div>
@@ -132,6 +132,16 @@ const schema = {
             let text = `مرحباً، اسمي ${name}\nرقم هاتفي: ${phone}`;
             if (email) text += `\nبريدي الإلكتروني: ${email}`;
             text += `\n\nالرسالة: ${message}`;
+
+            // ponytail: النموذج يفتح واتساب عبر window.open، وهذا لا يمر على
+            // المستمع المفوَّض في BaseLayout — لذا يُرسَل الحدث هنا يدوياً.
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', 'contact_click', {
+                method: 'whatsapp',
+                link_location: 'contact_form',
+                page_path: window.location.pathname,
+              });
+            }
 
             const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(text)}`;
             window.open(url, '_blank', 'noopener,noreferrer');

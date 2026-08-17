@@ -63,6 +63,45 @@ const { title, description, canonicalUrl, ogImage, schema, noindex } = Astro.pro
             gtag('js', new Date());
             gtag('config', gaId);
           </script>
+
+          {/* ponytail: مستمع واحد مفوَّض على مستوى الصفحة بدل إضافة onclick على كل
+              رابط — يلتقط كل روابط واتساب/الهاتف الحالية *وأي رابط يُضاف مستقبلاً*
+              تلقائياً، فلا يمكن أن يُنسى تتبّع رابط جديد. */}
+          <script is:inline>
+            document.addEventListener(
+              'click',
+              function (e) {
+                var a = e.target && e.target.closest && e.target.closest('a[href]');
+                if (!a || typeof window.gtag !== 'function') return;
+
+                var href = a.getAttribute('href') || '';
+                var method =
+                  href.indexOf('wa.me') !== -1 || href.indexOf('whatsapp') !== -1
+                    ? 'whatsapp'
+                    : href.indexOf('tel:') === 0
+                      ? 'phone'
+                      : null;
+                if (!method) return;
+
+                // موضع الرابط: يدوياً عبر data-ga-location، وإلا يُستنتج من البنية
+                var host = a.closest('[data-ga-location]');
+                var location = host
+                  ? host.getAttribute('data-ga-location')
+                  : a.closest('header')
+                    ? 'header'
+                    : a.closest('footer')
+                      ? 'footer'
+                      : 'content';
+
+                window.gtag('event', 'contact_click', {
+                  method: method,
+                  link_location: location,
+                  page_path: window.location.pathname,
+                });
+              },
+              true
+            );
+          </script>
         </>
       )
     }
