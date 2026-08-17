@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import { Icon } from 'astro-icon/components';
+import { business, yearsInBusiness } from '../data/business';
+
+const years = yearsInBusiness();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: `من نحن | ${business.name}`,
+  description: `تعرف على قصة ${business.name} — أكثر من ${business.projectsCount} مشروع منذ عام ${business.yearEstablished} في الكويت.`,
+  mainEntity: { '@id': `${business.website}/#business` },
+};
+---
+
+<BaseLayout
+  title={`من نحن | ${business.name}`}
+  description={`تعرف على قصة ${business.name}. أكثر من ${business.projectsCount} مشروع ناجح منذ عام ${business.yearEstablished} في تركيب السجاد والباركيه والثيل الصناعي بالكويت.`}
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'من نحن' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="prose-editorial mx-auto max-w-3xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        من نحن — {business.name}
+      </h1>
+
+      <p class="mt-6">
+        منذ تأسيسنا عام {business.yearEstablished}، ونحن في {business.name} نسعى لنكون الوجهة الأولى للسجاد (الزل والموكيت) والباركيه والثيل الصناعي في دولة الكويت. بدأنا برؤية بسيطة: تقديم منتجات عالية الجودة مع خدمة تركيب احترافية تصل إلى باب المنزل، وبأسعار تناسب مختلف الميزانيات.
+      </p>
+
+      <p>
+        على مدار السنوات، نفذنا أكثر من <strong>{business.projectsCount} مشروع</strong> في جميع مناطق الكويت — من السالمية وحولي إلى الفروانية والأحمدي والجهراء والعاصمة. هذا الرقم ليس مجرد إحصائية، بل هو انعكاس لثقة عملائنا التي نحرص على الحفاظ عليها في كل مشروع جديد.
+      </p>
+
+      <h2>ماذا نقدم؟</h2>
+      <p>
+        نوفر تشكيلة واسعة من السجاد بأنواعه: سجاد أمازون، سجاد مسجد، سجاد تركي، سجاد حرير، سجاد صوف، بالإضافة إلى الزل والموكيت بأسمائهما المحلية المعروفة في الكويت. كما نقدم باركيه HDF وباركيه خشبي طبيعي وأرضيات laminate، وثيل صناعي مقاوم للأشعة فوق البنفسجية ومناسب لمناخ الكويت الحار.
+      </p>
+
+      <h2>قيمنا</h2>
+      <ul>
+        <li><strong>الجودة أولاً:</strong> نختار منتجاتنا بعناية لضمان المتانة والجمال.</li>
+        <li><strong>الشفافية:</strong> أسعار واضحة ولا مفاجآت.</li>
+        <li><strong>الالتزام بالمواعيد:</strong> تركيب سريع ومنظم.</li>
+        <li><strong>خدمة ما بعد البيع:</strong> ضمان ونصائح للعناية بمنتجاتك.</li>
+      </ul>
+
+      <h2>من أعمالنا</h2>
+      <div class="not-prose grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <img src="/images/about-photo.webp" alt="من أعمال التركيب" loading="lazy" width="480" height="640" class="aspect-[3/4] w-full rounded-lg object-cover" />
+        <img src="/images/carpet-install-1.webp" alt="تركيب سجاد" loading="lazy" width="480" height="640" class="aspect-[3/4] w-full rounded-lg object-cover" />
+        <img src="/images/carpet-mosque-work.webp" alt="تركيب سجاد مسجد" loading="lazy" width="480" height="600" class="aspect-[3/4] w-full rounded-lg object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto grid max-w-4xl grid-cols-2 gap-6 px-5 text-center sm:grid-cols-4 lg:px-8">
+      {[
+        { icon: 'lucide:award', value: `+${business.projectsCount}`, label: 'مشروع منجز' },
+        { icon: 'lucide:calendar', value: `${years}+`, label: 'سنوات خبرة' },
+        { icon: 'lucide:map-pin', value: '6', label: 'مناطق مخدومة' },
+        { icon: 'lucide:layers', value: '3', label: 'خدمات رئيسية' },
+      ].map((s) => (
+        <div>
+          <Icon name={s.icon} class="mx-auto size-6 text-brand-700" aria-hidden="true" />
+          <p class="mt-2 font-display text-2xl font-extrabold text-brand-900">{s.value}</p>
+          <p class="text-xs text-stone-500">{s.label}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <ContactCTA />
+</BaseLayout>

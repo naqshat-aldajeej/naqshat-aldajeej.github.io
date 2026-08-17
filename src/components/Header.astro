@@ -1,0 +1,117 @@
+---
+import { Icon } from 'astro-icon/components';
+import { business } from '../data/business';
+import { servicesUrl, areasUrl, aboutUrl, contactUrl } from '../lib/urls';
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b border-stone-200/60 bg-white/90 backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-300"
+  id="site-header"
+>
+  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
+    <!-- الشعار -->
+    <a href="/" class="group flex items-center gap-2.5">
+      <div class="flex size-9 items-center justify-center rounded-lg bg-brand-800 transition-colors group-hover:bg-brand-700">
+        <Icon name="lucide:layout-grid" class="size-5 text-brand-100" />
+      </div>
+      <div class="flex flex-col">
+        <span class="font-display text-base font-bold leading-tight text-brand-900 sm:text-lg">
+          مخزن نقشات الضجيج
+        </span>
+        <span class="text-[11px] font-medium text-stone-500">للسجاد والباركيه</span>
+      </div>
+    </a>
+
+    <!-- التنقل (سطح المكتب) -->
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="التنقل الرئيسي">
+      <a href={servicesUrl()} class="rounded-lg px-3.5 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-800">الخدمات</a>
+      <a href={areasUrl()} class="rounded-lg px-3.5 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-800">المناطق</a>
+      <a href={aboutUrl()} class="rounded-lg px-3.5 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-800">من نحن</a>
+      <a href={contactUrl()} class="rounded-lg px-3.5 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-800">تواصل</a>
+    </nav>
+
+    <!-- الإجراءات -->
+    <div class="flex items-center gap-2">
+      <a
+        href={business.whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-green-700 sm:inline-flex"
+        aria-label="تواصل عبر واتساب"
+      >
+        <Icon name="lucide:message-circle" class="size-4" aria-hidden="true" />
+        واتساب
+      </a>
+      <a
+        href={business.phoneHref}
+        class="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-brand-950 shadow-sm transition-all hover:bg-amber-400 hover:shadow-md"
+      >
+        <Icon name="lucide:phone" class="size-4" aria-hidden="true" />
+        <span class="hidden sm:inline">اتصل الآن: {business.phone}</span>
+        <span class="sm:hidden">اتصل الآن</span>
+      </a>
+
+      <button
+        type="button"
+        class="inline-flex size-10 items-center justify-center rounded-lg text-stone-500 transition-colors hover:bg-stone-100 hover:text-stone-700 lg:hidden"
+        aria-label="فتح القائمة"
+        aria-expanded="false"
+        id="mobile-menu-btn"
+      >
+        <Icon name="lucide:menu" class="size-5" id="menu-icon-open" />
+        <Icon name="lucide:x" class="hidden size-5" id="menu-icon-close" />
+      </button>
+    </div>
+  </div>
+
+  <!-- قائمة الموبايل -->
+  <div class="hidden border-t border-stone-100 bg-white lg:hidden" id="mobile-menu">
+    <nav class="mx-auto max-w-7xl space-y-1 px-5 py-4" aria-label="التنقل للموبايل">
+      <a href={servicesUrl()} class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-brand-50 hover:text-brand-800">
+        <Icon name="lucide:layers" class="size-4 text-stone-400" aria-hidden="true" /> الخدمات
+      </a>
+      <a href={areasUrl()} class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-brand-50 hover:text-brand-800">
+        <Icon name="lucide:map-pin" class="size-4 text-stone-400" aria-hidden="true" /> المناطق
+      </a>
+      <a href={aboutUrl()} class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-brand-50 hover:text-brand-800">
+        <Icon name="lucide:info" class="size-4 text-stone-400" aria-hidden="true" /> من نحن
+      </a>
+      <a href={contactUrl()} class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-brand-50 hover:text-brand-800">
+        <Icon name="lucide:mail" class="size-4 text-stone-400" aria-hidden="true" /> تواصل
+      </a>
+      <div class="flex gap-2 pt-2">
+        <a href={business.whatsappHref} target="_blank" rel="noopener noreferrer" class="flex w-full items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2.5 text-sm font-medium text-white">
+          <Icon name="lucide:message-circle" class="size-4" aria-hidden="true" /> واتساب
+        </a>
+        <a href={business.phoneHref} class="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-brand-950">
+          <Icon name="lucide:phone" class="size-4" aria-hidden="true" /> اتصل الآن
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  btn?.addEventListener('click', () => {
+    const isHidden = menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    iconOpen?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+  });
+
+  const header = document.getElementById('site-header');
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (window.scrollY > 8) header?.classList.add('shadow-sm');
+      else header?.classList.remove('shadow-sm');
+    },
+    { passive: true },
+  );
+</script>

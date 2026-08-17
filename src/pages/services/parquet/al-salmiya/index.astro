@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+import SeoFaq from '../../../../components/SeoFaq.astro';
+import ContactCTA from '../../../../components/ContactCTA.astro';
+import { business } from '../../../../data/business';
+import { serviceAreas } from '../../../../data/serviceAreas';
+import { faqs } from '../../../../data/seoContent';
+import { comboUrl, serviceUrl, servicesUrl } from '../../../../lib/urls';
+
+const area = serviceAreas.find((a) => a.slug === 'al-salmiya')!;
+const nearbyAreas = serviceAreas.filter((a) => area.nearby.includes(a.slug));
+
+const productTypes = [
+  'باركيه HDF',
+  'باركيه خشبي طبيعي',
+  'أرضيات laminate',
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${business.website}/services/parquet/al-salmiya/#service`,
+      name: 'باركيه في السالمية',
+      provider: { '@id': `${business.website}/#business` },
+      areaServed: { '@type': 'City', name: 'السالمية' },
+      description: 'تركيب باركيه احترافي في السالمية. تشكيلة واسعة وأسعار تنافسية. أكثر من 1700 مشروع. اتصل 65061072',
+      offers: { '@type': 'Offer', priceCurrency: 'KWD', availability: 'https://schema.org/InStock' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: business.website },
+        { '@type': 'ListItem', position: 2, name: 'الخدمات', item: `${business.website}${servicesUrl()}` },
+        { '@type': 'ListItem', position: 3, name: 'باركيه', item: `${business.website}${serviceUrl('parquet')}` },
+        { '@type': 'ListItem', position: 4, name: 'السالمية', item: `${business.website}${comboUrl('parquet', 'al-salmiya')}` },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="باركيه في السالمية | تركيب باركيه | مخزن نقشات الضجيج"
+  description="✓ تركيب باركيه احترافي في السالمية. أكثر من 1700 مشروع منذ 2019. اتصل 65061072 أو واتساب 96565061072"
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'الخدمات', href: servicesUrl() }, { label: 'باركيه', href: serviceUrl('parquet') }, { label: 'السالمية' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="prose-editorial mx-auto max-w-3xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        باركيه في السالمية
+      </h1>
+      <p class="mt-6">نقدم لعملائنا في السالمية خدمة تركيب باركيه بفريق متخصص يعرف طبيعة المباني في محافظة حولي ويلتزم بالمواعيد المتفق عليها.</p>
+
+      <h2>الأنواع المتوفرة في السالمية</h2>
+      <ul>
+        {productTypes.map((t) => (
+          <li>{t}</li>
+        ))}
+      </ul>
+
+      <h2>لماذا يختارنا سكان السالمية؟</h2>
+      <ul>
+        <li>فريق يصلكم في السالمية بالوقت المحدد</li>
+        <li>تشكيلة واسعة تناسب مختلف الأذواق والميزانيات</li>
+        <li>معاينة ميدانية دقيقة قبل التسعير</li>
+        <li>خدمة ما بعد التركيب</li>
+      </ul>
+
+      <h2>مناطق قريبة نخدمها</h2>
+      <p>
+        بالإضافة إلى السالمية، نقدّم خدمة باركيه في المناطق المجاورة:{' '}
+        {nearbyAreas.map((a, i) => (
+          <>
+            <a href={comboUrl('parquet', a.slug)}>{a.name}</a>{i < nearbyAreas.length - 1 ? '، ' : ''}
+          </>
+        ))}
+      </p>
+
+      <p>فريقنا جاهز لاستقبال طلبكم من السالمية والرد على جميع استفساراتكم.</p>
+    </div>
+  </section>
+
+  <SeoFaq items={faqs.filter(f => f.question.includes('باركيه') || f.question.includes('ساعات') || f.question.includes('مناطق'))} title="أسئلة شائعة عن باركيه في السالمية" />
+  <ContactCTA heading={`تواصل معنا لخدمتك في السالمية`} />
+</BaseLayout>

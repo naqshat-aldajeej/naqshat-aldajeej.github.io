@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import SeoFaq from '../../../components/SeoFaq.astro';
+import ContactCTA from '../../../components/ContactCTA.astro';
+import { Icon } from 'astro-icon/components';
+import { business } from '../../../data/business';
+import { serviceAreas } from '../../../data/serviceAreas';
+import { faqs } from '../../../data/seoContent';
+import { comboUrl, servicesUrl } from '../../../lib/urls';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${business.website}/services/carpets/#service`,
+      name: 'تركيب سجاد في الكويت',
+      provider: { '@id': `${business.website}/#business` },
+      description: 'تركيب سجاد احترافي في الكويت. تشكيلة واسعة: سجاد أمازون، سجاد مسجد، سجاد تركي، سجاد حرير، سجاد صوف. أكثر من 1700 مشروع.',
+      areaServed: serviceAreas.map((a) => ({ '@type': 'City', name: a.name })),
+      offers: { '@type': 'Offer', priceCurrency: 'KWD', availability: 'https://schema.org/InStock' },
+    },
+  ],
+};
+
+const carpetTypes = [
+  { name: 'سجاد أمازون', desc: 'تصاميم عصرية وألوان جذابة تناسب المنازل الحديثة، من أكثر منتجاتنا طلباً.' },
+  { name: 'سجاد مسجد', desc: 'جودة عالية ومتانة استثنائية مصممة خصيصاً للمساجد والمصليات، مقاوم للاستخدام المكثف.' },
+  { name: 'سجاد تركي', desc: 'تصاميم كلاسيكية وألوان دافئة تضفي لمسة تراثية أنيقة على أي مكان.' },
+  { name: 'سجاد حرير', desc: 'فخامة ورقي لا مثيل لهما، خيار مثالي لصالات الاستقبال والمناسبات.' },
+  { name: 'سجاد صوف', desc: 'دفء ومتانة للاستخدام اليومي، مناسب للغرف والمجالس على مدار العام.' },
+  { name: 'الزل', desc: 'الاسم المحلي للسجاد في الكويت — تشكيلة تقليدية وأصيلة تحافظ على الطابع الكويتي.' },
+  { name: 'الموكيت', desc: 'الاسم المحلي للسجاد في الكويت — تصاميم عصرية وعملية، سهلة التركيب والصيانة.' },
+];
+---
+
+<BaseLayout
+  title="تركيب سجاد الكويت | زل وموكيت وسجاد أمازون ومسجد"
+  description="✓ تركيب سجاد احترافي في الكويت. زل، موكيت، سجاد أمازون، سجاد مسجد، سجاد تركي. أكثر من 1700 مشروع. اتصل 65061072"
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'الخدمات', href: servicesUrl() }, { label: 'تركيب سجاد' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="prose-editorial mx-auto max-w-3xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        تركيب سجاد في الكويت — زل وموكيت وسجاد أمازون
+      </h1>
+
+      <img
+        src="/images/hero-carpet.webp"
+        alt="سجاد مثبت في الكويت"
+        loading="eager"
+        width="1080"
+        height="1440"
+        class="mt-6 aspect-video w-full rounded-xl object-cover"
+      />
+
+      <p class="mt-6">
+        في {business.name}، نفخر بتقديم أفضل خدمة تركيب سجاد في الكويت. منذ عام {business.yearEstablished}، نفذنا أكثر من {business.projectsCount} مشروع ناجح، ونحن ندرك أن السجاد (الزل والموكيت) ليس مجرد أرضية، بل قطعة فنية تضيف دفئاً وأناقة إلى منزلك.
+      </p>
+
+      <h2>أنواع السجاد المتوفرة</h2>
+      {carpetTypes.map((t) => (
+        <>
+          <h3>{t.name}</h3>
+          <p>{t.desc}</p>
+        </>
+      ))}
+
+      <h2>من أعمالنا</h2>
+      <div class="not-prose grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <img src="/images/carpet-samples.webp" alt="عينات سجاد" loading="lazy" width="360" height="480" class="aspect-[3/4] w-full rounded-lg object-cover" />
+        <img src="/images/carpet-mosque-work.webp" alt="تركيب سجاد مسجد" loading="lazy" width="360" height="450" class="aspect-[3/4] w-full rounded-lg object-cover" />
+        <img src="/images/carpet-mosque-samples.webp" alt="عينات سجاد مساجد" loading="lazy" width="360" height="360" class="aspect-[3/4] w-full rounded-lg object-cover" />
+      </div>
+
+      <h2>خدمة التركيب</h2>
+      <p>
+        يقوم فريقنا المتخصص بزيارة الموقع، أخذ المقاسات بدقة، ثم تركيب السجاد بعناية تامة لضمان مظهر أنيق وثبات طويل الأمد. نلتزم بالمواعيد المتفق عليها ونحافظ على نظافة مكان العمل طوال فترة التركيب.
+      </p>
+
+      <h2>المناطق التي نخدمها</h2>
+      <p>نصل بخدمة تركيب السجاد إلى جميع مناطق الكويت:</p>
+      <ul>
+        {serviceAreas.map((a) => (
+          <li><a href={comboUrl('carpets', a.slug)}>تركيب سجاد في {a.name}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <SeoFaq items={faqs.filter(f => f.question.includes('سجاد') || f.question.includes('ساعات') || f.question.includes('مناطق'))} title="أسئلة شائعة عن تركيب السجاد" />
+  <ContactCTA />
+</BaseLayout>

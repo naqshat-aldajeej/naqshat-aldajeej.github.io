@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import SeoFaq from '../../../components/SeoFaq.astro';
+import ContactCTA from '../../../components/ContactCTA.astro';
+import { business } from '../../../data/business';
+import { serviceTypes } from '../../../data/serviceTypes';
+import { serviceAreas } from '../../../data/serviceAreas';
+import { faqs } from '../../../data/seoContent';
+import { comboUrl, areaUrl, areasUrl } from '../../../lib/urls';
+
+const area = serviceAreas.find((a) => a.slug === 'al-asimah')!;
+const nearbyAreas = serviceAreas.filter((a) => area.nearby.includes(a.slug));
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${business.website}/areas/al-asimah/#service`,
+      name: 'تركيب سجاد وباركيه وثيل صناعي في العاصمة',
+      provider: { '@id': `${business.website}/#business` },
+      areaServed: { '@type': 'City', name: 'العاصمة' },
+      description: 'تركيب سجاد وباركيه وثيل صناعي احترافي في العاصمة. تشكيلة واسعة وأسعار تنافسية. أكثر من 1700 مشروع. اتصل 65061072',
+      offers: { '@type': 'Offer', priceCurrency: 'KWD', availability: 'https://schema.org/InStock' },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="تركيب سجاد وباركيه وثيل صناعي في العاصمة | مخزن نقشات الضجيج"
+  description="✓ تركيب سجاد (زل وموكيت) وباركيه وثيل صناعي في العاصمة. أكثر من 1700 مشروع منذ 2019. اتصل 65061072 أو واتساب 96565061072"
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'المناطق', href: areasUrl() }, { label: 'العاصمة' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="prose-editorial mx-auto max-w-3xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        تركيب سجاد وباركيه وثيل صناعي في العاصمة
+      </h1>
+      <p class="mt-6">العاصمة من المناطق التي نغطيها ضمن محافظة العاصمة، حيث ننفذ مشاريع تركيب السجاد والباركيه والثيل الصناعي بجودة عالية وأسعار تنافسية.</p>
+
+      <h2>خدماتنا في العاصمة</h2>
+      <ul>
+        {serviceTypes.map((s) => (
+          <li><a href={comboUrl(s.slug, area.slug)}>{s.name} في العاصمة</a> — {s.shortDescription}</li>
+        ))}
+      </ul>
+
+      <h2>لماذا يختارنا سكان العاصمة؟</h2>
+      <ul>
+        <li>سمعة طيبة بين سكان محافظة العاصمة</li>
+        <li>مرونة في المواعيد تناسب جدولكم</li>
+        <li>تشكيلة تغطي كل الميزانيات</li>
+        <li>فريق يستمع لاحتياجاتكم قبل التنفيذ</li>
+      </ul>
+
+      <h2>مناطق قريبة نخدمها</h2>
+      <p>
+        بالإضافة إلى العاصمة، نصل بخدماتنا إلى المناطق المجاورة:{' '}
+        {nearbyAreas.map((a, i) => (
+          <>
+            <a href={areaUrl(a.slug)}>{a.name}</a>{i < nearbyAreas.length - 1 ? '، ' : ''}
+          </>
+        ))}
+      </p>
+
+      <p>نسعد بخدمتكم في العاصمة؛ تواصلوا معنا لمناقشة تفاصيل مشروعكم.</p>
+    </div>
+  </section>
+
+  <SeoFaq items={faqs.filter(f => f.question.includes('مناطق') || f.question.includes('ساعات') || f.question.includes('ضمان'))} title="أسئلة شائعة عن خدماتنا في العاصمة" />
+  <ContactCTA heading={`تواصل معنا لخدمتك في العاصمة`} />
+</BaseLayout>

@@ -1,0 +1,153 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* ============================================================
+   مخزن نقشات الضجيج للسجاد — أنماط عامة (RTL / عربي)
+   الخط: Cairo (عناوين) + Tajawal (نص) — عربي، عبر Google Fonts
+   لوحة الألوان: تراكوتا/عنابي دافئ (يليق بالسجاد والباركيه) + ذهبي CTA
+   ============================================================ */
+
+@theme {
+  /* --- الخطوط --- */
+  --font-display: 'Cairo', sans-serif;
+  --font-body: 'Tajawal', sans-serif;
+
+  /* --- لوحة الألوان الأساسية (عنابي/تراكوتا دافئ) --- */
+  --color-brand-50: #fbf3f1;
+  --color-brand-100: #f5e0da;
+  --color-brand-200: #eabdb1;
+  --color-brand-300: #dc9483;
+  --color-brand-400: #c96b55;
+  --color-brand-500: #b04a35;
+  --color-brand-600: #93392a;
+  --color-brand-700: #742d22;
+  --color-brand-800: #5c2620;
+  --color-brand-900: #4a201d;
+  --color-brand-950: #2b1210;
+
+  /* --- الحياد (Stone) --- */
+  --color-stone-50: #fafaf9;
+  --color-stone-100: #f5f5f4;
+  --color-stone-200: #e7e5e4;
+  --color-stone-300: #d6d3d1;
+  --color-stone-400: #a8a29e;
+  --color-stone-500: #78716c;
+  --color-stone-600: #57534e;
+  --color-stone-700: #44403c;
+  --color-stone-800: #292524;
+  --color-stone-900: #1c1917;
+  --color-stone-950: #0c0a09;
+
+  /* --- الذهبي (لون CTA) --- */
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-200: #fde68a;
+  --color-amber-300: #fcd34d;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+  --color-amber-700: #b45309;
+  --color-amber-800: #92400e;
+  --color-amber-900: #78350f;
+  --color-amber-950: #451a03;
+
+  /* --- الحركة --- */
+  --animate-fade-up: fadeUp 0.6s ease-out both;
+  --animate-fade-in: fadeIn 0.5s ease-out both;
+  --animate-slide-down: slideDown 0.4s ease-out both;
+  --animate-scale-in: scaleIn 0.3s ease-out both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@utility stagger-1 { animation-delay: 0.1s; }
+@utility stagger-2 { animation-delay: 0.2s; }
+@utility stagger-3 { animation-delay: 0.3s; }
+@utility stagger-4 { animation-delay: 0.4s; }
+@utility stagger-5 { animation-delay: 0.5s; }
+@utility stagger-6 { animation-delay: 0.6s; }
+
+@utility glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@layer base {
+  html {
+    direction: rtl;
+  }
+  /* احترام تفضيل تقليل الحركة */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .card-hover {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  }
+
+  /* نص إرشادي طويل (صفحات الخدمات/المناطق) */
+  .prose-editorial {
+    font-family: var(--font-body);
+    line-height: 1.9;
+    color: var(--color-stone-700);
+  }
+  .prose-editorial h2,
+  .prose-editorial h3 {
+    font-family: var(--font-display);
+    color: var(--color-stone-900);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  .prose-editorial h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.625rem;
+  }
+  .prose-editorial h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+  }
+  .prose-editorial a {
+    color: var(--color-brand-700);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-editorial a:hover {
+    color: var(--color-brand-500);
+  }
+  .prose-editorial ul {
+    list-style-type: disc;
+    padding-right: 1.5rem;
+  }
+  .prose-editorial li {
+    margin-bottom: 0.5rem;
+  }
+}

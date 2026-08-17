@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { Icon } from 'astro-icon/components';
+import { business } from '../data/business';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: `تواصل مع ${business.name}`,
+  description: `تواصل معنا للاستفسار عن السجاد (زل وموكيت) والباركيه والثيل الصناعي في الكويت. هاتف: ${business.phone} | واتساب: ${business.whatsapp}`,
+  mainEntity: {
+    '@type': 'HomeGoodsStore',
+    name: business.name,
+    telephone: business.phoneIntl,
+    email: business.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: business.address.streetAddress,
+      addressLocality: business.address.city,
+      addressCountry: business.address.country,
+    },
+  },
+};
+---
+
+<BaseLayout
+  title={`تواصل معنا | ${business.name} | ${business.phone}`}
+  description={`تواصل مع ${business.name} للاستفسار عن السجاد (زل وموكيت) والباركيه والثيل الصناعي. هاتف: ${business.phone} | واتساب: ${business.whatsapp}`}
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'تواصل' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="mx-auto max-w-5xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        تواصل مع {business.name}
+      </h1>
+      <p class="mt-4 max-w-2xl text-stone-600">
+        نحن هنا لمساعدتك في اختيار الأرضيات المثالية لمنزلك. تواصل معنا عبر أي من القنوات التالية.
+      </p>
+
+      <div class="mt-10 grid gap-10 lg:grid-cols-2">
+        <!-- معلومات التواصل -->
+        <div class="space-y-6">
+          <div class="flex items-start gap-4 rounded-xl border border-stone-200 bg-white p-5">
+            <Icon name="lucide:phone" class="size-6 shrink-0 text-brand-700" aria-hidden="true" />
+            <div>
+              <h2 class="font-display font-bold text-stone-900">هاتف</h2>
+              <a href={business.phoneHref} class="text-stone-600 hover:text-brand-700">{business.phone}</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 rounded-xl border border-stone-200 bg-white p-5">
+            <Icon name="lucide:message-circle" class="size-6 shrink-0 text-green-600" aria-hidden="true" />
+            <div>
+              <h2 class="font-display font-bold text-stone-900">واتساب</h2>
+              <a href={business.whatsappHref} target="_blank" rel="noopener noreferrer" class="text-stone-600 hover:text-brand-700">{business.whatsapp}</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 rounded-xl border border-stone-200 bg-white p-5">
+            <Icon name="lucide:map-pin" class="size-6 shrink-0 text-brand-700" aria-hidden="true" />
+            <div>
+              <h2 class="font-display font-bold text-stone-900">العنوان</h2>
+              <p class="text-stone-600">{business.address.streetAddress}، {business.address.city}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 rounded-xl border border-stone-200 bg-white p-5">
+            <Icon name="lucide:clock" class="size-6 shrink-0 text-brand-700" aria-hidden="true" />
+            <div>
+              <h2 class="font-display font-bold text-stone-900">ساعات العمل</h2>
+              {business.hours.map((h) => (
+                <p class="text-stone-600">{h.days}: {h.hours}</p>
+              ))}
+            </div>
+          </div>
+
+          <!-- ponytail: iframe خرائط جوجل بدون مفتاح API (نمط embed العام free tier)، يعتمد على الإحداثيات في business.ts. ceiling: دبوس تقريبي وليس عنوان GBP دقيق موثّق. upgrade: استبدله برابط embed رسمي من لوحة Google Business Profile عند إنشائها فعلياً. -->
+          <div class="overflow-hidden rounded-xl border border-stone-200">
+            <iframe
+              title={`موقع ${business.name} على خرائط جوجل`}
+              src={`https://maps.google.com/maps?q=${business.coordinates.lat},${business.coordinates.lng}&z=15&output=embed`}
+              width="100%"
+              height="220"
+              style="border:0"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${business.coordinates.lat},${business.coordinates.lng}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm font-medium text-stone-600 transition-colors hover:border-brand-400 hover:text-brand-700"
+          >
+            <Icon name="lucide:map" class="size-5" aria-hidden="true" /> فتح الاتجاهات على خرائط جوجل
+          </a>
+        </div>
+
+        <!-- ponytail: معالج الإرسال يبني رسالة واتساب من الحقول ويفتح wa.me مباشرة (بدون باك-إند/خدمة خارجية، يعمل فوراً على static hosting). ceiling: يعتمد على أن الزائر يملك واتساب مثبتاً على جهازه (وهو الافتراض الشائع في الكويت)؛ لا يُخزَّن أي بريد إلكتروني للمتابعة اليدوية. upgrade: أضف Formspree أو Netlify Forms كقناة بديلة/موازية عند الرغبة بأرشفة الرسائل. -->
+        <form id="contact-form" class="space-y-4 rounded-xl border border-stone-200 bg-white p-6" aria-label="نموذج التواصل">
+          <div>
+            <label for="name" class="mb-1.5 block text-sm font-medium text-stone-700">الاسم</label>
+            <input id="name" name="name" type="text" required class="w-full rounded-lg border border-stone-300 px-3.5 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200" />
+          </div>
+          <div>
+            <label for="phone" class="mb-1.5 block text-sm font-medium text-stone-700">رقم الهاتف</label>
+            <input id="phone" name="phone" type="tel" required class="w-full rounded-lg border border-stone-300 px-3.5 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200" />
+          </div>
+          <div>
+            <label for="email" class="mb-1.5 block text-sm font-medium text-stone-700">البريد الإلكتروني (اختياري)</label>
+            <input id="email" name="email" type="email" class="w-full rounded-lg border border-stone-300 px-3.5 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200" />
+          </div>
+          <div>
+            <label for="message" class="mb-1.5 block text-sm font-medium text-stone-700">الرسالة</label>
+            <textarea id="message" name="message" rows="4" required class="w-full rounded-lg border border-stone-300 px-3.5 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"></textarea>
+          </div>
+          <button type="submit" class="w-full rounded-lg bg-brand-800 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700">
+            إرسال عبر واتساب
+          </button>
+          <p class="text-center text-xs text-stone-400">سيتم فتح واتساب برسالة جاهزة تحتوي على بياناتك — راجعها ثم اضغط إرسال.</p>
+        </form>
+
+        <script define:vars={{ whatsapp: business.whatsapp }}>
+          const form = document.getElementById('contact-form');
+          form?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            let text = `مرحباً، اسمي ${name}\nرقم هاتفي: ${phone}`;
+            if (email) text += `\nبريدي الإلكتروني: ${email}`;
+            text += `\n\nالرسالة: ${message}`;
+
+            const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+          });
+        </script>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

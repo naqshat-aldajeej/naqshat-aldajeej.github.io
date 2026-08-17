@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+import SeoFaq from '../../../../components/SeoFaq.astro';
+import ContactCTA from '../../../../components/ContactCTA.astro';
+import { business } from '../../../../data/business';
+import { serviceAreas } from '../../../../data/serviceAreas';
+import { faqs } from '../../../../data/seoContent';
+import { comboUrl, serviceUrl, servicesUrl } from '../../../../lib/urls';
+
+const area = serviceAreas.find((a) => a.slug === 'al-salmiya')!;
+const nearbyAreas = serviceAreas.filter((a) => area.nearby.includes(a.slug));
+
+const productTypes = [
+  'ثيل صناعي للحدائق',
+  'ثيل صناعي للبلكونات',
+  'ثيل صناعي لأسطح المنازل',
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${business.website}/services/artificial-grass/al-salmiya/#service`,
+      name: 'ثيل صناعي في السالمية',
+      provider: { '@id': `${business.website}/#business` },
+      areaServed: { '@type': 'City', name: 'السالمية' },
+      description: 'تركيب ثيل صناعي احترافي في السالمية. تشكيلة واسعة وأسعار تنافسية. أكثر من 1700 مشروع. اتصل 65061072',
+      offers: { '@type': 'Offer', priceCurrency: 'KWD', availability: 'https://schema.org/InStock' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: business.website },
+        { '@type': 'ListItem', position: 2, name: 'الخدمات', item: `${business.website}${servicesUrl()}` },
+        { '@type': 'ListItem', position: 3, name: 'ثيل صناعي', item: `${business.website}${serviceUrl('artificial-grass')}` },
+        { '@type': 'ListItem', position: 4, name: 'السالمية', item: `${business.website}${comboUrl('artificial-grass', 'al-salmiya')}` },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="ثيل صناعي في السالمية | تركيب ثيل صناعي | مخزن نقشات الضجيج"
+  description="✓ تركيب ثيل صناعي احترافي في السالمية. أكثر من 1700 مشروع منذ 2019. اتصل 65061072 أو واتساب 96565061072"
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'الخدمات', href: servicesUrl() }, { label: 'ثيل صناعي', href: serviceUrl('artificial-grass') }, { label: 'السالمية' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="prose-editorial mx-auto max-w-3xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        ثيل صناعي في السالمية
+      </h1>
+      <p class="mt-6">لعملائنا في السالمية، نوفر استشارة مجانية لاختيار الأنسب ضمن خدمة تركيب ثيل صناعي، مع تركيب سريع ونظيف.</p>
+
+      <h2>الأنواع المتوفرة في السالمية</h2>
+      <ul>
+        {productTypes.map((t) => (
+          <li>{t}</li>
+        ))}
+      </ul>
+
+      <h2>لماذا يختارنا سكان السالمية؟</h2>
+      <ul>
+        <li>استجابة سريعة لطلبات السالمية</li>
+        <li>مواد بجودة عالية ومقاومة للاستخدام اليومي</li>
+        <li>تركيب دقيق يضمن مظهراً أنيقاً لسنوات</li>
+        <li>دعم فني بعد التسليم</li>
+      </ul>
+
+      <h2>مناطق قريبة نخدمها</h2>
+      <p>
+        بالإضافة إلى السالمية، نقدّم خدمة ثيل صناعي في المناطق المجاورة:{' '}
+        {nearbyAreas.map((a, i) => (
+          <>
+            <a href={comboUrl('artificial-grass', a.slug)}>{a.name}</a>{i < nearbyAreas.length - 1 ? '، ' : ''}
+          </>
+        ))}
+      </p>
+
+      <p>اطلبوا زيارة فنية مجانية لمنزلكم أو مكتبكم في السالمية دون أي التزام.</p>
+    </div>
+  </section>
+
+  <SeoFaq items={faqs.filter(f => f.question.includes('الثيل') || f.question.includes('ساعات') || f.question.includes('مناطق'))} title="أسئلة شائعة عن ثيل صناعي في السالمية" />
+  <ContactCTA heading={`تواصل معنا لخدمتك في السالمية`} />
+</BaseLayout>

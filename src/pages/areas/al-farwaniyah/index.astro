@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import SeoFaq from '../../../components/SeoFaq.astro';
+import ContactCTA from '../../../components/ContactCTA.astro';
+import { business } from '../../../data/business';
+import { serviceTypes } from '../../../data/serviceTypes';
+import { serviceAreas } from '../../../data/serviceAreas';
+import { faqs } from '../../../data/seoContent';
+import { comboUrl, areaUrl, areasUrl } from '../../../lib/urls';
+
+const area = serviceAreas.find((a) => a.slug === 'al-farwaniyah')!;
+const nearbyAreas = serviceAreas.filter((a) => area.nearby.includes(a.slug));
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${business.website}/areas/al-farwaniyah/#service`,
+      name: 'تركيب سجاد وباركيه وثيل صناعي في الفروانية',
+      provider: { '@id': `${business.website}/#business` },
+      areaServed: { '@type': 'City', name: 'الفروانية' },
+      description: 'تركيب سجاد وباركيه وثيل صناعي احترافي في الفروانية. تشكيلة واسعة وأسعار تنافسية. أكثر من 1700 مشروع. اتصل 65061072',
+      offers: { '@type': 'Offer', priceCurrency: 'KWD', availability: 'https://schema.org/InStock' },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="تركيب سجاد وباركيه وثيل صناعي في الفروانية | مخزن نقشات الضجيج"
+  description="✓ تركيب سجاد (زل وموكيت) وباركيه وثيل صناعي في الفروانية. أكثر من 1700 مشروع منذ 2019. اتصل 65061072 أو واتساب 96565061072"
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'المناطق', href: areasUrl() }, { label: 'الفروانية' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="prose-editorial mx-auto max-w-3xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        تركيب سجاد وباركيه وثيل صناعي في الفروانية
+      </h1>
+      <p class="mt-6">نخدم الفروانية ضمن شبكة تغطيتنا لجميع محافظات الكويت، ونوفر لأهالي الفروانية تشكيلة كاملة من السجاد والباركيه والثيل الصناعي مع تركيب احترافي.</p>
+
+      <h2>خدماتنا في الفروانية</h2>
+      <ul>
+        {serviceTypes.map((s) => (
+          <li><a href={comboUrl(s.slug, area.slug)}>{s.name} في الفروانية</a> — {s.shortDescription}</li>
+        ))}
+      </ul>
+
+      <h2>لماذا يختارنا سكان الفروانية؟</h2>
+      <ul>
+        <li>فريق يصلكم في الفروانية بالوقت المحدد</li>
+        <li>تشكيلة واسعة تناسب مختلف الأذواق</li>
+        <li>خبرة تتجاوز 7 سنة في السوق الكويتي</li>
+        <li>خدمة ما بعد البيع لعملاء الفروانية</li>
+      </ul>
+
+      <h2>مناطق قريبة نخدمها</h2>
+      <p>
+        بالإضافة إلى الفروانية، نصل بخدماتنا إلى المناطق المجاورة:{' '}
+        {nearbyAreas.map((a, i) => (
+          <>
+            <a href={areaUrl(a.slug)}>{a.name}</a>{i < nearbyAreas.length - 1 ? '، ' : ''}
+          </>
+        ))}
+      </p>
+
+      <p>فريقنا جاهز لاستقبال طلبكم من الفروانية والرد على جميع استفساراتكم.</p>
+    </div>
+  </section>
+
+  <SeoFaq items={faqs.filter(f => f.question.includes('مناطق') || f.question.includes('ساعات') || f.question.includes('ضمان'))} title="أسئلة شائعة عن خدماتنا في الفروانية" />
+  <ContactCTA heading={`تواصل معنا لخدمتك في الفروانية`} />
+</BaseLayout>

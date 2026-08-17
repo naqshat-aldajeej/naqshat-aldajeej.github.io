@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import { Icon } from 'astro-icon/components';
+import { business } from '../../data/business';
+import { serviceAreas } from '../../data/serviceAreas';
+import { areaUrl } from '../../lib/urls';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: serviceAreas.map((a, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: a.name,
+    url: `${business.website}${areaUrl(a.slug)}`,
+  })),
+};
+---
+
+<BaseLayout
+  title={`مناطق الخدمة | ${business.name}`}
+  description="نخدم جميع مناطق الكويت: السالمية، حولي، الفروانية، الأحمدي، الجهراء، والعاصمة. تركيب سجاد وباركيه وثيل صناعي."
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'المناطق' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">مناطق الخدمة</h1>
+      <p class="mt-4 max-w-2xl text-stone-600">
+        نصل بخدماتنا (السجاد، الباركيه، الثيل الصناعي) إلى جميع محافظات الكويت.
+      </p>
+
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {serviceAreas.map((area) => (
+          <a href={areaUrl(area.slug)} class="card-hover flex items-center gap-4 rounded-xl border border-stone-200 bg-white p-6">
+            <div class="flex size-12 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
+              <Icon name="lucide:map-pin" class="size-6" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 class="font-display text-lg font-bold text-brand-900">{area.name}</h2>
+              <p class="text-sm text-stone-500">محافظة {area.county} — خدماتنا تصلك</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA />
+</BaseLayout>

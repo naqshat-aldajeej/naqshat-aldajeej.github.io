@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import SeoFaq from '../../../components/SeoFaq.astro';
+import ContactCTA from '../../../components/ContactCTA.astro';
+import { business } from '../../../data/business';
+import { serviceTypes } from '../../../data/serviceTypes';
+import { serviceAreas } from '../../../data/serviceAreas';
+import { faqs } from '../../../data/seoContent';
+import { comboUrl, areaUrl, areasUrl } from '../../../lib/urls';
+
+const area = serviceAreas.find((a) => a.slug === 'al-ahmadi')!;
+const nearbyAreas = serviceAreas.filter((a) => area.nearby.includes(a.slug));
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${business.website}/areas/al-ahmadi/#service`,
+      name: 'تركيب سجاد وباركيه وثيل صناعي في الأحمدي',
+      provider: { '@id': `${business.website}/#business` },
+      areaServed: { '@type': 'City', name: 'الأحمدي' },
+      description: 'تركيب سجاد وباركيه وثيل صناعي احترافي في الأحمدي. تشكيلة واسعة وأسعار تنافسية. أكثر من 1700 مشروع. اتصل 65061072',
+      offers: { '@type': 'Offer', priceCurrency: 'KWD', availability: 'https://schema.org/InStock' },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="تركيب سجاد وباركيه وثيل صناعي في الأحمدي | مخزن نقشات الضجيج"
+  description="✓ تركيب سجاد (زل وموكيت) وباركيه وثيل صناعي في الأحمدي. أكثر من 1700 مشروع منذ 2019. اتصل 65061072 أو واتساب 96565061072"
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'المناطق', href: areasUrl() }, { label: 'الأحمدي' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="prose-editorial mx-auto max-w-3xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        تركيب سجاد وباركيه وثيل صناعي في الأحمدي
+      </h1>
+      <p class="mt-6">من أكثر المناطق التي ننفذ فيها مشاريع بشكل متكرر: الأحمدي. نعرف طبيعة المنازل والمكاتب في الأحمدي جيداً، ونقترح الحل الأنسب لكل مساحة.</p>
+
+      <h2>خدماتنا في الأحمدي</h2>
+      <ul>
+        {serviceTypes.map((s) => (
+          <li><a href={comboUrl(s.slug, area.slug)}>{s.name} في الأحمدي</a> — {s.shortDescription}</li>
+        ))}
+      </ul>
+
+      <h2>لماذا يختارنا سكان الأحمدي؟</h2>
+      <ul>
+        <li>معرفة جيدة بمخططات المباني في الأحمدي</li>
+        <li>عينات حقيقية تُعرض قبل الشراء</li>
+        <li>فريق تركيب نظيف ومنظم</li>
+        <li>أسعار واضحة بدون تكاليف خفية</li>
+      </ul>
+
+      <h2>مناطق قريبة نخدمها</h2>
+      <p>
+        بالإضافة إلى الأحمدي، نصل بخدماتنا إلى المناطق المجاورة:{' '}
+        {nearbyAreas.map((a, i) => (
+          <>
+            <a href={areaUrl(a.slug)}>{a.name}</a>{i < nearbyAreas.length - 1 ? '، ' : ''}
+          </>
+        ))}
+      </p>
+
+      <p>احصلوا على عرض سعر مجاني لمشروعكم في الأحمدي خلال دقائق.</p>
+    </div>
+  </section>
+
+  <SeoFaq items={faqs.filter(f => f.question.includes('مناطق') || f.question.includes('ساعات') || f.question.includes('ضمان'))} title="أسئلة شائعة عن خدماتنا في الأحمدي" />
+  <ContactCTA heading={`تواصل معنا لخدمتك في الأحمدي`} />
+</BaseLayout>

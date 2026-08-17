@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import SeoFaq from '../../../components/SeoFaq.astro';
+import ContactCTA from '../../../components/ContactCTA.astro';
+import { business } from '../../../data/business';
+import { serviceAreas } from '../../../data/serviceAreas';
+import { faqs } from '../../../data/seoContent';
+import { comboUrl, servicesUrl } from '../../../lib/urls';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${business.website}/services/artificial-grass/#service`,
+  name: 'تركيب ثيل صناعي في الكويت',
+  provider: { '@id': `${business.website}/#business` },
+  description: 'تركيب ثيل صناعي وعشب صناعي للحدائق والمساحات الخارجية في الكويت. مقاوم للأشعة فوق البنفسجية.',
+  areaServed: serviceAreas.map((a) => ({ '@type': 'City', name: a.name })),
+  offers: { '@type': 'Offer', priceCurrency: 'KWD', availability: 'https://schema.org/InStock' },
+};
+---
+
+<BaseLayout
+  title="ثيل صناعي الكويت | عشب صناعي للحدائق"
+  description="✓ تركيب ثيل صناعي وعشب صناعي للحدائق في الكويت. مقاوم للأشعة فوق البنفسجية ولا يحتاج سقي. أكثر من 1700 مشروع. اتصل 65061072"
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'الخدمات', href: servicesUrl() }, { label: 'ثيل صناعي' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="prose-editorial mx-auto max-w-3xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        تركيب ثيل صناعي في الكويت
+      </h1>
+
+      <img
+        src="/images/hero-grass.webp"
+        alt="ثيل صناعي في الكويت"
+        loading="eager"
+        width="930"
+        height="902"
+        class="mt-6 aspect-video w-full rounded-xl object-cover"
+      />
+
+      <p class="mt-6">
+        نوفر في {business.name} حلول عشب صناعي للحدائق والمساحات الخارجية والبلكونات، مصممة خصيصاً لتتحمل حرارة الكويت الشديدة. منذ عام {business.yearEstablished}، ساعدنا أكثر من {business.projectsCount} عميل على تحويل حدائقهم إلى مساحات خضراء دائمة بدون عناء الصيانة.
+      </p>
+
+      <h2>مميزات الثيل الصناعي لدينا</h2>
+      <ul>
+        <li>مقاوم للأشعة فوق البنفسجية ولا يتلاشى لونه مع حرارة الصيف.</li>
+        <li>لا يحتاج سقي أو قص، توفير في الوقت والماء.</li>
+        <li>يدوم لسنوات طويلة مع الحفاظ على مظهره الطبيعي.</li>
+        <li>مناسب للحدائق والبلكونات ومساحات تنسيق الحدائق.</li>
+      </ul>
+
+      <h2>من أعمالنا</h2>
+      <div class="not-prose grid grid-cols-2 gap-3">
+        <img src="/images/grass-garden.webp" alt="تنسيق حديقة بالثيل الصناعي" loading="lazy" width="480" height="480" class="aspect-square w-full rounded-lg object-cover" />
+        <img src="/images/grass-sample.webp" alt="عينة ثيل صناعي" loading="lazy" width="480" height="600" class="aspect-square w-full rounded-lg object-cover" />
+      </div>
+
+      <h2>خدمة التركيب</h2>
+      <p>
+        يشمل التركيب تجهيز الأرضية وتسوية التربة، ثم فرد الثيل الصناعي وتثبيته بإحكام لضمان مظهر طبيعي ومتانة عالية.
+      </p>
+
+      <h2>المناطق التي نخدمها</h2>
+      <ul>
+        {serviceAreas.map((a) => (
+          <li><a href={comboUrl('artificial-grass', a.slug)}>ثيل صناعي {a.name}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <SeoFaq items={faqs.filter(f => f.question.includes('الثيل') || f.question.includes('ساعات') || f.question.includes('مناطق'))} title="أسئلة شائعة عن الثيل الصناعي" />
+  <ContactCTA />
+</BaseLayout>

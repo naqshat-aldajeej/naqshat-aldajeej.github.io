@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import SeoFaq from '../../../components/SeoFaq.astro';
+import ContactCTA from '../../../components/ContactCTA.astro';
+import { business } from '../../../data/business';
+import { serviceAreas } from '../../../data/serviceAreas';
+import { faqs } from '../../../data/seoContent';
+import { comboUrl, servicesUrl } from '../../../lib/urls';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${business.website}/services/parquet/#service`,
+  name: 'تركيب باركيه في الكويت',
+  provider: { '@id': `${business.website}/#business` },
+  description: 'تركيب باركيه احترافي في الكويت. باركيه HDF، باركيه خشبي طبيعي، وأرضيات laminate. أكثر من 1700 مشروع.',
+  areaServed: serviceAreas.map((a) => ({ '@type': 'City', name: a.name })),
+  offers: { '@type': 'Offer', priceCurrency: 'KWD', availability: 'https://schema.org/InStock' },
+};
+
+const parquetTypes = [
+  { name: 'باركيه HDF', desc: 'مقاوم للخدوش وسهل التنظيف، خيار عملي واقتصادي للمنازل والمكاتب.' },
+  { name: 'باركيه خشبي طبيعي', desc: 'فخامة ودفء طبيعي يدوم لسنوات طويلة، يضفي طابعاً راقياً على أي مساحة.' },
+  { name: 'أرضيات laminate', desc: 'اقتصادية وأنيقة، تركيب سريع ومقاومة جيدة للاستخدام اليومي.' },
+];
+---
+
+<BaseLayout
+  title="باركيه الكويت | تركيب باركيه HDF وخشبي طبيعي"
+  description="✓ تركيب باركيه احترافي في الكويت. باركيه HDF، باركيه خشبي طبيعي، أرضيات laminate. أكثر من 1700 مشروع. اتصل 65061072"
+  schema={schema}
+>
+  <Breadcrumbs crumbs={[{ label: 'الخدمات', href: servicesUrl() }, { label: 'باركيه' }]} />
+
+  <section class="py-10 lg:py-16">
+    <div class="prose-editorial mx-auto max-w-3xl px-5 lg:px-8">
+      <h1 class="font-display text-3xl font-extrabold text-brand-900 sm:text-4xl">
+        تركيب باركيه في الكويت
+      </h1>
+
+      <img
+        src="/images/hero-parquet.webp"
+        alt="تشكيلة باركيه في الكويت"
+        loading="eager"
+        width="1080"
+        height="1440"
+        class="mt-6 aspect-video w-full rounded-xl object-cover"
+      />
+
+      <p class="mt-6">
+        نوفر في {business.name} أرضيات خشبية وباركيه بجودة عالية وتركيب احترافي. منذ عام {business.yearEstablished}، نفذنا أكثر من {business.projectsCount} مشروع في جميع مناطق الكويت، ونحرص على اختيار مواد تتحمل أجواء الكويت وتحافظ على مظهرها لسنوات.
+      </p>
+
+      <h2>أنواع الباركيه المتوفرة</h2>
+      {parquetTypes.map((t) => (
+        <>
+          <h3>{t.name}</h3>
+          <p>{t.desc}</p>
+        </>
+      ))}
+
+      <h2>من أعمالنا</h2>
+      <div class="not-prose grid grid-cols-2 gap-3">
+        <img src="/images/parquet-rolls-2.webp" alt="تشكيلة باركيه" loading="lazy" width="480" height="640" class="aspect-[3/4] w-full rounded-lg object-cover" />
+        <img src="/images/parquet-rolls-3.webp" alt="تشكيلة باركيه ألوان متعددة" loading="lazy" width="480" height="640" class="aspect-[3/4] w-full rounded-lg object-cover" />
+      </div>
+
+      <h2>خدمة التركيب</h2>
+      <p>
+        يعتمد وقت التركيب على مساحة المكان، لكنه يستغرق عادةً من 1 إلى 3 أيام للمنزل المتوسط. يقوم فريقنا بتجهيز الأرضية وتركيب الباركيه بدقة لضمان استواء تام وعمر طويل.
+      </p>
+
+      <h2>المناطق التي نخدمها</h2>
+      <ul>
+        {serviceAreas.map((a) => (
+          <li><a href={comboUrl('parquet', a.slug)}>باركيه {a.name}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <SeoFaq items={faqs.filter(f => f.question.includes('باركيه') || f.question.includes('ساعات') || f.question.includes('مناطق'))} title="أسئلة شائعة عن الباركيه" />
+  <ContactCTA />
+</BaseLayout>
